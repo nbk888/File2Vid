@@ -1,0 +1,4 @@
+DateTime==5.5
+numpy==2.2.2
+Wave==0.0.2
+ffmpeg-python==0.2.0
