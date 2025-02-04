@@ -10,13 +10,24 @@ This software is not available in languages other than Chinese.
 - 提供图形化界面提示和交互。
 - <font size="1">挺精简的？</font>
 
-### 环境依赖
-
+### 下载
+`git clone https://github.com/nbk888/File2Vid.git`
 
 
 ### 运行步骤
 - 建议使用anaconda等虚拟环境
 `conda create -n file2vid python=3.10`
+`activate file2vid`
+——————————————————
+`cd File2Vid`
+
+1. 安装ffmpeg:
+https://www.gyan.dev/ffmpeg/builds/ 下载ffmpeg-git-essentials.7z
+将其解压到某个目录
+打开 编辑系统环境变量 系统变量 => 双击Path => 新建 => (解压的ffmpeg路径)\bin\
+打开cmd测试 ffmpeg -version 如果有版本号则安装成功
+如果没有版本号 请按照这篇文章再详细安装 https://blog.csdn.net/Natsuago/article/details/143231558
+
 
 1. 安装依赖库：`pip install -r requirements.txt` 
 2. 运行脚本：``python main.py``
