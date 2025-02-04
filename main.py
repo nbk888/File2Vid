@@ -145,7 +145,7 @@ def create_audio_from_file(file_path, output_path, sample_rate=int(sample_rate))
 file_path = whatpath
 audio_output_path = 'audio_temp_output.wav'
 create_audio_from_file(file_path, audio_output_path)
-print("音频已生成，保存为{audio_output_path}")
+print(f"音频已生成，保存为{audio_output_path}")
 
 # 合并视频和音频
 def merge_video_audio(video_path, audio_path, output_path):
