@@ -18,7 +18,7 @@ This software is not available in languages other than Chinese.
 - 建议使用anaconda等虚拟环境
 `conda create -n file2vid python=3.10`
 `activate file2vid`
-——————————————————
+
 `cd File2Vid`
 
 1. 安装ffmpeg:
