@@ -1,25 +1,22 @@
 import numpy as np
+from moviepy import ImageSequenceClip, VideoFileClip
 import wave
+import subprocess
 import tkinter as tk
 from tkinter import filedialog, messagebox, simpledialog
 import time
 import sys
 import os
 from datetime import datetime
-import ffmpeg  # 导入ffmpeg-python库
-
-#刚学编程 我写的是屎山代码我写的是屎山代码我写的是屎山代码
-# 限制递归深度
-sys.setrecursionlimit(sys.getrecursionlimit() * 5)
-
-# 创建一个隐藏的主窗口
-root = tk.Tk()
-root.withdraw()  # 隐藏主窗口
 
 # 时间戳
 now = datetime.now()
 timestamp = now.timestamp()
 print("当前时间戳：", timestamp)
+
+# 创建一个隐藏的主窗口
+root = tk.Tk()
+root.withdraw()  # 隐藏主窗口
 
 # 显示警告信息
 messagebox.showwarning("警告！", "请不要在程序运行时删除本目录下的临时文件，否则会导致程序运行出错！")
@@ -57,14 +54,12 @@ while True:
         
 whatpath = file_path
 
-# 还未使用的功能.....
+#还未使用的功能.....
 def bytes_to_image(data, width, height):
     image = np.frombuffer(data, dtype=np.uint8)
     image = image[:width * height * 3]
     image = image.reshape((height, width, 3))
     return image
-
-messagebox.showinfo("提示","生成过程可能较为漫长，请耐心等待。可在控制台查看生成过程")
 
 # 二进制文件转视频
 def create_video_from_file(file_path, output_path, width=256, height=256, fps=int(whatfps)):
@@ -82,18 +77,9 @@ def create_video_from_file(file_path, output_path, width=256, height=256, fps=in
         frame = bytes_to_image(frame_data, width, height)
         frames.append(frame)
     
-    clip = ffmpeg.input('pipe:', format='rawvideo', pix_fmt='rgb24', s='{}x{}'.format(width, height), r=fps)
-    process = (
-        ffmpeg
-        .output(clip, output_path, vcodec='libx264')
-        .overwrite_output()
-        .run_async(pipe_stdin=True)
-    )
-    for frame in frames:
-        process.stdin.write(frame.tobytes())
-    process.stdin.close()
-    process.wait()
-    print(f"视频已生成，保存为{output_path}")
+    clip = ImageSequenceClip(frames, fps=fps)
+    clip.write_videofile(output_path, codec='libx264')
+    clip.close()  # 确保释放资源
 
 file_path = whatpath
 video_output_path = 'video_temp_output.mp4'
@@ -102,20 +88,19 @@ print(f"视频已生成，保存为{video_output_path}")
 
 # 获取视频时长
 def get_video_duration(output_path):
-    probe = ffmpeg.probe(output_path)
-    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-    duration = float(video_stream['duration'])
+    clip = VideoFileClip(output_path)
+    duration = clip.duration
+    clip.close()  # 确保释放资源
     return duration
 
 videolong = get_video_duration(video_output_path)
 
 # 计算音频采样率
 def calculate_audio_sample_rate(video_path, video_duration):
-    probe = ffmpeg.probe(video_path)
-    video_stream = next((stream for stream in probe['streams'] if stream['codec_type'] == 'video'), None)
-    fps = float(video_stream['avg_frame_rate'].split('/')[0]) / float(video_stream['avg_frame_rate'].split('/')[1])
-    width = int(video_stream['width'])
-    height = int(video_stream['height'])
+    clip = VideoFileClip(video_path)
+    fps = clip.fps
+    width, height = clip.size
+    clip.close()  # 确保释放资源
     
     total_frames = int(video_duration * fps)
     frame_data_size = width * height * 3
@@ -124,7 +109,6 @@ def calculate_audio_sample_rate(video_path, video_duration):
     return sample_rate
 
 sample_rate = calculate_audio_sample_rate(video_output_path, videolong)
-
 # 将二进制数据转换为音频数据
 def bytes_to_audio(data, sample_rate=int(sample_rate)):
     audio = np.frombuffer(data, dtype=np.int16)
@@ -149,10 +133,19 @@ print(f"音频已生成，保存为{audio_output_path}")
 
 # 合并视频和音频
 def merge_video_audio(video_path, audio_path, output_path):
-    video_input = ffmpeg.input(video_path)
-    audio_input = ffmpeg.input(audio_path)
-    ffmpeg.output(video_input, audio_input, output_path, vcodec='copy', acodec='aac').overwrite_output().run()
-    print(f"合并完成，输出文件保存为{output_path}")
+    FFmer = [
+        "ffmpeg",
+        "-i", video_path,
+        "-i", audio_path,
+        "-c:v", "copy",
+        "-c:a", "aac",
+        output_path
+    ]
+    try:
+        subprocess.run(FFmer, check=True)
+        print(f"合并完成，输出文件保存为{output_path}")
+    except subprocess.CalledProcessError as e:
+        print(f"合并失败：{e}")
 
 video_path = video_output_path
 audio_path = audio_output_path
@@ -161,9 +154,20 @@ merge_video_audio(video_path, audio_path, nozoom_output_path)
 
 # 放大视频
 def resize_video(input_file, output_file, width, height):
-    video_input = ffmpeg.input(input_file)
-    ffmpeg.output(video_input, output_file, vf=f"scale={width}:{height}:flags=neighbor", vcodec='libx264', crf=18, acodec='copy').overwrite_output().run()
-    print(f"视频已成功放大并保存到 {output_file}")
+    FFzoom = [
+        "ffmpeg",
+        "-i", input_file,
+        "-vf", f"scale={width}:{height}:flags=neighbor",
+        "-c:v", "libx264",
+        "-crf", "18",
+        "-c:a", "copy",
+        output_file
+    ]
+    try:
+        subprocess.run(FFzoom, check=True)
+        print(f"视频已成功放大并保存到 {output_file}")
+    except subprocess.CalledProcessError as e:
+        print(f"调用 FFmpeg 时出错: {e}")
 
 input_file = nozoom_output_path
 output_file = f"./output_{timestamp}.mp4"
@@ -181,6 +185,7 @@ def safe_delete(file_path, retries=3, delay=2):
             time.sleep(delay)
     print(f"无法删除文件：{file_path}，请手动删除。")
 
+
 messagebox.showinfo("成功！", "视频已生成！")
 time.sleep(1)
 
@@ -191,3 +196,4 @@ safe_delete(nozoom_output_path)
 print("已删除临时文件")
 
 os._exit(0)
+#这是旧的使用subprocess调用ffmpeg的代码
