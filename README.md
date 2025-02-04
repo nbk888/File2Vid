@@ -21,7 +21,7 @@ This software is not available in languages other than Chinese.
 
 `cd File2Vid`
 
-1. 安装ffmpeg:
+1. 安装ffmpeg:（如果已安装可以跳过）
 https://www.gyan.dev/ffmpeg/builds/ 下载ffmpeg-git-essentials.7z
 将其解压到某个目录
 打开 编辑系统环境变量 系统变量 => 双击Path => 新建 => (解压的ffmpeg路径)\bin\
