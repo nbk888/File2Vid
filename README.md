@@ -1,5 +1,5 @@
 # File2Vid
-This software is not available in languages other than Chinese.
+This software is not available in languages other than Chinese and English.
 
 使用nuitka编译了，解压运行main.exe即可
 
