@@ -158,8 +158,38 @@ def merge_video_audio(video_path, audio_path, output_path):
     except subprocess.CalledProcessError as e:
         print(f"合并失败：{e}")
 
-video_path = video_output_path
-audio_path = audio_output_path
+while True:
+    video_path = filedialog.askopenfilename(
+        title="请选择py文件目录下的video_temp_output.mp4文件",
+        filetypes=[("所有文件", "*.*")]
+    )
+    if video_path:
+        result = messagebox.askyesno("确认", f"选中的文件路径是：\n{file_path}\n\n请确认是否正确")
+        if result:
+            print("文件选择已确认，继续后续操作...")
+            break
+        else:
+            print("文件选择错误，重新选择文件...")
+    else:
+        print("没有选择文件，程序将在3秒后退出...")
+        time.sleep(3)
+while True:
+    audio_path = filedialog.askopenfilename(
+        title="请选择py文件目录下的audio_temp_output.wav文件",
+        filetypes=[("所有文件", "*.*")]
+    )
+    if audio_path:
+        result = messagebox.askyesno("确认", f"选中的文件路径是：\n{file_path}\n\n请确认是否正确")
+        if result:
+            print("文件选择已确认，继续后续操作...")
+            break
+        else:
+            print("文件选择错误，重新选择文件...")
+    else:
+        print("没有选择文件，程序将在3秒后退出...")
+        time.sleep(3)
+        sys.exit()
+        sys.exit()
 nozoom_output_path = "nozoomtemp_output.mp4"
 merge_video_audio(video_path, audio_path, nozoom_output_path)
 
