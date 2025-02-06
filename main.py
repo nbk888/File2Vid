@@ -54,6 +54,19 @@ while True:
         
 whatpath = file_path
 
+while True:
+    whatel = simpledialog.askstring("视频边长？", "请输入生成视频的边长：（像素）（提示：会做放大处理，不用担心插值模糊）")
+    if whatel == None:
+        print("未输入帧率，程序将在3秒后退出...")
+        time.sleep(3)
+        sys.exit()
+    elif whatel.isdigit():
+        break
+    else:
+        messagebox.showerror("错误", "请输入数字！")
+
+messagebox.showinfo("提示", "生成过程可能需要较长时间，请耐心等待... 可以在控制台中查看进度")
+
 #还未使用的功能.....
 def bytes_to_image(data, width, height):
     image = np.frombuffer(data, dtype=np.uint8)
@@ -62,7 +75,7 @@ def bytes_to_image(data, width, height):
     return image
 
 # 二进制文件转视频
-def create_video_from_file(file_path, output_path, width=256, height=256, fps=int(whatfps)):
+def create_video_from_file(file_path, output_path, width=int(whatel), height=int(whatel), fps=int(whatfps)):
     with open(file_path, 'rb') as file:
         data = file.read()
     
