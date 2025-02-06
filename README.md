@@ -1,7 +1,8 @@
 # File2Vid 
-<font color=Red>Alpha TEST Version</font>
-<font color=Red>Alpha测试版，有许多未完成的功能和错误，请不要轻易尝试</font>
-This software is not available in languages other than Chinese.
+Alpha TEST Version
+Alpha测试版，有许多未完成的功能和错误，请不要轻易尝试
+This software is not available in languages other than Chinese and English.
+Feel free to post an issue to translate the GUI of this software into a language you are familiar with!
 
 ## 程序简介
  这是一个基于 Python 的脚本，用于将任何文件转换为视频和音频，并将它们合并为一个完整的视频文件。它利用了 `ffmpeg-python` 等工具实现文件的转换和处理。
