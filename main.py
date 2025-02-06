@@ -51,6 +51,17 @@ while True:
         break
     else:
         messagebox.showerror("错误", "请输入数字！")
+
+while True:
+    whatbc = simpledialog.askstring("边长？", "请输入生成视频的边长：")
+    if whatfps == None:
+        print("未输入，程序将在3秒后退出...")
+        time.sleep(3)
+        sys.exit()
+    elif whatfps.isdigit():
+        break
+    else:
+        messagebox.showerror("错误", "请输入数字！")
         
 whatpath = file_path
 
@@ -62,7 +73,7 @@ def bytes_to_image(data, width, height):
     return image
 
 # 二进制文件转视频
-def create_video_from_file(file_path, output_path, width=256, height=256, fps=int(whatfps)):
+def create_video_from_file(file_path, output_path, width=bc, height=bc, fps=int(whatfps)):
     with open(file_path, 'rb') as file:
         data = file.read()
     
