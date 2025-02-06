@@ -1,18 +1,6 @@
-<<<<<<< HEAD
-# File2Vid
-This software is not available in languages other than Chinese and English.
-
-使用nuitka编译了，解压运行main.exe即可
-
-https://www.123865.com/s/CndUjv-mVGVh?
-提取码:f2vd
-=======
 # File2Vid 
-Alpha TEST Version
-Alpha测试版，有许多未完成的功能和错误，请不要轻易尝试
 This software is not available in languages other than Chinese and English.
 Feel free to post an issue to translate the GUI of this software into a language you are familiar with!
->>>>>>> 8e7636cf3ec607521130e566ba368b738b20d608
 
 ## 程序简介
  这是一个基于 Python 的脚本，用于将任何文件转换为视频和音频，并将它们合并为一个完整的视频文件。它利用了 `ffmpeg-python` 等工具实现文件的转换和处理。
