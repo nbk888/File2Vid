@@ -207,4 +207,3 @@ safe_delete(nozoom_output_path)
 print("已删除临时文件")
 
 os._exit(0)
-#这是旧的使用subprocess调用ffmpeg的代码
