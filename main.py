@@ -51,6 +51,17 @@ while True:
         break
     else:
         messagebox.showerror("错误", "请输入数字！")
+
+while True:
+    whatbc = simpledialog.askstring("边长？", "请输入生成视频的边长：")
+    if whatfps == None:
+        print("未输入，程序将在3秒后退出...")
+        time.sleep(3)
+        sys.exit()
+    elif whatfps.isdigit():
+        break
+    else:
+        messagebox.showerror("错误", "请输入数字！")
         
 whatpath = file_path
 
@@ -75,7 +86,11 @@ def bytes_to_image(data, width, height):
     return image
 
 # 二进制文件转视频
+<<<<<<< HEAD
 def create_video_from_file(file_path, output_path, width=int(whatel), height=int(whatel), fps=int(whatfps)):
+=======
+def create_video_from_file(file_path, output_path, width=int(whatbc), height=int(whatbc), fps=int(whatfps)):
+>>>>>>> 8e7636cf3ec607521130e566ba368b738b20d608
     with open(file_path, 'rb') as file:
         data = file.read()
     
@@ -209,4 +224,3 @@ safe_delete(nozoom_output_path)
 print("已删除临时文件")
 
 os._exit(0)
-#这是旧的使用subprocess调用ffmpeg的代码
