@@ -73,7 +73,7 @@ def bytes_to_image(data, width, height):
     return image
 
 # 二进制文件转视频
-def create_video_from_file(file_path, output_path, width=bc, height=bc, fps=int(whatfps)):
+def create_video_from_file(file_path, output_path, width=int(whatbc), height=int(whatbc), fps=int(whatfps)):
     with open(file_path, 'rb') as file:
         data = file.read()
     
