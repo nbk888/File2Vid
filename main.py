@@ -40,42 +40,22 @@ while True:
         sys.exit()
 
 print(f"选中的文件路径是：{file_path}")
-
-while True:
-    whatfps = simpledialog.askstring("帧率？", "请输入生成视频的帧率：")
-    if whatfps == None:
-        print("未输入帧率，程序将在3秒后退出...")
-        time.sleep(3)
-        sys.exit()
-    elif whatfps.isdigit():
-        break
-    else:
-        messagebox.showerror("错误", "请输入数字！")
-
-while True:
-    whatbc = simpledialog.askstring("边长？", "请输入生成视频的边长：")
-    if whatfps == None:
-        print("未输入，程序将在3秒后退出...")
-        time.sleep(3)
-        sys.exit()
-    elif whatfps.isdigit():
-        break
-    else:
-        messagebox.showerror("错误", "请输入数字！")
-        
 whatpath = file_path
 
-while True:
-    whatel = simpledialog.askstring("视频边长？", "请输入生成视频的边长：（像素）（提示：会做放大处理，不用担心插值模糊）")
-    if whatel == None:
-        print("未输入帧率，程序将在3秒后退出...")
-        time.sleep(3)
-        sys.exit()
-    elif whatel.isdigit():
-        break
-    else:
-        messagebox.showerror("错误", "请输入数字！")
+def get_input(prompt, error_message, additional_message=""):
+    while True:
+        user_input = simpledialog.askstring(prompt, f"请输入生成视频的{prompt}：{additional_message}")
+        if user_input is None:
+            print(f"未输入{prompt}，程序将在3秒后退出...")
+            time.sleep(3)
+            sys.exit()
+        elif user_input.isdigit():
+            return int(user_input)
+        else:
+            messagebox.showerror("错误", error_message)
 
+whatfps = get_input("帧率", "请输入数字！")
+whatel = get_input("边长", "请输入数字！", "（像素）（提示：会做放大处理，不用担心插值模糊）")
 messagebox.showinfo("提示", "生成过程可能需要较长时间，请耐心等待... 可以在控制台中查看进度")
 
 #还未使用的功能.....
@@ -86,11 +66,7 @@ def bytes_to_image(data, width, height):
     return image
 
 # 二进制文件转视频
-<<<<<<< HEAD
 def create_video_from_file(file_path, output_path, width=int(whatel), height=int(whatel), fps=int(whatfps)):
-=======
-def create_video_from_file(file_path, output_path, width=int(whatbc), height=int(whatbc), fps=int(whatfps)):
->>>>>>> 8e7636cf3ec607521130e566ba368b738b20d608
     with open(file_path, 'rb') as file:
         data = file.read()
     
