@@ -115,7 +115,7 @@ def calculate_audio_sample_rate(video_path, video_duration):
 sample_rate = calculate_audio_sample_rate(video_output_path, videolong)
 # 将二进制数据转换为音频数据
 def bytes_to_audio(data, sample_rate=int(sample_rate)):
-    audio = np.frombuffer(data, dtype=np.int16)
+    audio = np.frombuffer(data, dtype=np.int8)
     return audio
 
 def create_audio_from_file(file_path, output_path, sample_rate=int(sample_rate)):
